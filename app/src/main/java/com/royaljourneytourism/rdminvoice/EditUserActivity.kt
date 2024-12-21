@@ -1,31 +1,54 @@
 package com.royaljourneytourism.rdminvoice
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.firestore.FirebaseFirestore
+import com.royaljourneytourism.rdminvoice.Adapter.Recyclerview.EditUserAdapter
+import com.royaljourneytourism.rdminvoice.Model.editUser
 import com.royaljourneytourism.rdminvoice.databinding.ActivityEditUserBinding
 
 class EditUserActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityEditUserBinding
+    private val firestore = FirebaseFirestore.getInstance()
+    private val userList = ArrayList<editUser>() // Use ArrayList as per the adapter
+    private lateinit var adapter: EditUserAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
 
         // Initialize View Binding
         binding = ActivityEditUserBinding.inflate(layoutInflater)
-
-        // Set the content view to the binding root
         setContentView(binding.root)
 
-        // Handle window insets for padding adjustments
-        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+        // Set up RecyclerView
+        setupRecyclerView()
+
+        // Fetch data from Firestore
+        fetchUsersFromFirestore()
+    }
+
+    private fun setupRecyclerView() {
+        adapter = EditUserAdapter(userList)
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.adapter = adapter
+    }
+
+    private fun fetchUsersFromFirestore() {
+        firestore.collection("Users")
+            .get()
+            .addOnSuccessListener { documents ->
+                userList.clear() // Clear existing list
+                for (document in documents) {
+                    val user = document.toObject(editUser::class.java) // Convert Firestore document to User object
+                    userList.add(user)
+                }
+                adapter.notifyDataSetChanged() // Notify adapter of data change
+            }
+            .addOnFailureListener { exception ->
+                // Handle error
+                exception.printStackTrace()
+            }
     }
 }

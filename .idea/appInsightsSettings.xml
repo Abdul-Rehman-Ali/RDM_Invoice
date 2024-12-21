@@ -23,9 +23,9 @@
               <option name="connection">
                 <ConnectionSetting>
                   <option name="appId" value="com.royaljourneytourism.rdminvoice" />
-                  <option name="mobileSdkAppId" value="1:741910613982:android:24e9f48591390334df574f" />
-                  <option name="projectId" value="royal-journey-tourism" />
-                  <option name="projectNumber" value="741910613982" />
+                  <option name="mobileSdkAppId" value="1:312724048876:android:8f5a909d9743b4ac3c4ec9" />
+                  <option name="projectId" value="foodieflixdb" />
+                  <option name="projectNumber" value="312724048876" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
