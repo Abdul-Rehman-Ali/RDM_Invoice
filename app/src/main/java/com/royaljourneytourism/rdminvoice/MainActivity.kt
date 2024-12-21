@@ -39,7 +39,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.cvHistory.setOnClickListener {
-            // Handle History card click
+            val intent = Intent(this, UsersHistoryActivity::class.java)
+            startActivity(intent)
         }
     }
 }
