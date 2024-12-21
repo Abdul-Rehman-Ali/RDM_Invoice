@@ -30,7 +30,8 @@ class EditUserActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        adapter = EditUserAdapter(userList)
+        // Pass the context (this) to the adapter
+        adapter = EditUserAdapter(this, userList)
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = adapter
     }

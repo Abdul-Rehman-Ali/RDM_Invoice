@@ -139,6 +139,7 @@ class AddNewUserActivity : AppCompatActivity() {
                         "username" to username,
                         "email" to email,
                         "phoneNo" to phoneNumber,
+                        "password" to password,
                         "webURL" to websiteURL,
                         "webName" to websiteName,
                         "color" to pickedColor,
