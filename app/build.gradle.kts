@@ -55,4 +55,7 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     // Color Picker Dependency
     implementation (libs.colorpickerview)
+    // auth
+    implementation (libs.firebase.auth)
+
 }

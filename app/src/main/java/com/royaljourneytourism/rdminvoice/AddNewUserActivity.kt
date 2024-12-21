@@ -9,12 +9,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.royaljourneytourism.rdminvoice.databinding.ActivityAddNewUserBinding
-import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
-import com.skydoves.colorpickerview.ColorPickerDialog
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.royaljourneytourism.rdminvoice.databinding.ActivityAddNewUserBinding
+import com.skydoves.colorpickerview.ColorPickerDialog
+import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
 
 class AddNewUserActivity : AppCompatActivity() {
 
@@ -33,6 +34,7 @@ class AddNewUserActivity : AppCompatActivity() {
     // Firebase instances
     private val firestore by lazy { FirebaseFirestore.getInstance() }
     private val storage by lazy { FirebaseStorage.getInstance().reference }
+    private val auth by lazy { FirebaseAuth.getInstance() }
 
     // File picker for photo upload
     private val pickPhotoLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
@@ -71,7 +73,7 @@ class AddNewUserActivity : AppCompatActivity() {
             pickPhotoLauncher.launch("image/*")
         }
 
-        // Collect data from fields when user clicks "Save" or equivalent button
+        // Collect data from fields when user clicks "Save" button
         binding.btnSave.setOnClickListener {
             collectUserData()
             saveUserDataToFirestore()
@@ -120,34 +122,55 @@ class AddNewUserActivity : AppCompatActivity() {
     }
 
     private fun saveUserDataToFirestore() {
-        // Create a map of user data
-        val userData = hashMapOf(
-            "username" to username,
-            "email" to email,
-            "phoneNo" to phoneNumber,
-            "password" to password,
-            "webURL" to websiteURL,
-            "webName" to websiteName,
-            "color" to pickedColor,
-            "logoURL" to uploadedPhotoUri // Add the uploaded photo URL here
-        )
+        // Validate email and password
+        if (email.isNullOrEmpty() || password.isNullOrEmpty()) {
+            Toast.makeText(this, "Email and Password are required", Toast.LENGTH_SHORT).show()
+            return
+        }
 
-        // Add data to Firestore in the "Users" collection
-        firestore.collection("Users")
-            .add(userData)
-            .addOnSuccessListener { documentReference ->
-                Toast.makeText(
-                    this,
-                    "User Created Successfully",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(
-                    this,
-                    "Failed to add user: ${e.message}",
-                    Toast.LENGTH_LONG
-                ).show()
+        // Sign up the user with Firebase Authentication
+        auth.createUserWithEmailAndPassword(email!!, password!!)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    // If signup is successful, save the user data to Firestore
+                    val userId = task.result?.user?.uid
+                    val userData = hashMapOf(
+                        "userId" to userId,
+                        "username" to username,
+                        "email" to email,
+                        "phoneNo" to phoneNumber,
+                        "webURL" to websiteURL,
+                        "webName" to websiteName,
+                        "color" to pickedColor,
+                        "logoURL" to uploadedPhotoUri // Add the uploaded photo URL here
+                    )
+
+                    // Save the user data in Firestore with the userId as the document ID
+                    firestore.collection("Users")
+                        .document(userId!!)
+                        .set(userData)
+                        .addOnSuccessListener {
+                            Toast.makeText(
+                                this,
+                                "User Created and Data Saved Successfully",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(
+                                this,
+                                "Failed to save user data: ${e.message}",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
+                } else {
+                    // If signup fails, show error message
+                    Toast.makeText(
+                        this,
+                        "Signup Failed: ${task.exception?.message}",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
             }
     }
 }

@@ -33,6 +33,11 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        binding.cvEditUser.setOnClickListener {
+            val intent = Intent(this, EditUserActivity::class.java)
+            startActivity(intent)
+        }
+
         binding.cvHistory.setOnClickListener {
             // Handle History card click
         }
