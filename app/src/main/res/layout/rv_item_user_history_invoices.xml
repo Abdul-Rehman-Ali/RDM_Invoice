@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:backgroundTint="@color/grey"
-    android:id="@+id/cv_userHistory"
+    android:id="@+id/cv_userHistory_invoices"
     android:layout_margin="8dp"
     app:cardCornerRadius="16dp"
     app:cardElevation="8dp">
@@ -15,7 +15,7 @@
         android:orientation="vertical"
         android:padding="20dp">
 
-        <!-- Reviewer Name and Edit Icon Section -->
+        <!-- Reviewer Name and Date Section -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
             android:gravity="center_vertical">
 
             <TextView
-                android:id="@+id/tv_username"
+                android:id="@+id/tv_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -31,9 +31,16 @@
                 android:textStyle="bold"
                 android:textSize="20sp" />
 
+            <TextView
+                android:id="@+id/tv_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Date"
+                android:textColor="@color/primary"
+                android:textSize="14sp" />
         </LinearLayout>
 
-        <!-- Web Name and Delete Icon Section -->
+        <!-- Package Name and Price Section -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -42,12 +49,29 @@
             android:layout_marginTop="8dp">
 
             <TextView
-                android:id="@+id/tv_webName"
+                android:id="@+id/tv_packageTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Web Name"
+                android:text="Package Title"
                 android:textColor="@color/primary"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PKR: "
+                android:textColor="@color/primary"
+                android:textStyle="bold"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Price"
+                android:textColor="@color/primary"
+                android:textStyle="bold"
                 android:textSize="16sp" />
         </LinearLayout>
 
