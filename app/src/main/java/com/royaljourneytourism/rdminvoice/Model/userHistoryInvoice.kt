@@ -5,5 +5,5 @@ data class userHistoryInvoice(
     val packageName: String = "",
     val name: String = "",
     val currentDate : String = "",
-    val price : String = ""
+    val totalPrice: Double = 0.0
 )

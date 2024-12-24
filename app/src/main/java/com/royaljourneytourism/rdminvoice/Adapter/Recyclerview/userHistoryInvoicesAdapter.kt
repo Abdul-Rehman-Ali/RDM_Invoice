@@ -19,6 +19,7 @@ class UsersHistoryInvoicesAdapter(
         val packageName: TextView = itemView.findViewById(R.id.tv_packageTitle)
         val name: TextView = itemView.findViewById(R.id.tv_name)
         val currentDate: TextView = itemView.findViewById(R.id.tv_date)
+        val totalPrice: TextView = itemView.findViewById(R.id.tv_price)
     }
 
     // Inflating the layout for each item
@@ -33,6 +34,7 @@ class UsersHistoryInvoicesAdapter(
         holder.packageName.text = user.packageName
         holder.name.text = user.name
         holder.currentDate.text = user.currentDate
+        holder.totalPrice.text = user.totalPrice.toString()
     }
 
     // Returns the size of the list

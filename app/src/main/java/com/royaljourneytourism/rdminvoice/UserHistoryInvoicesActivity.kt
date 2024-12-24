@@ -66,7 +66,6 @@ class UserHistoryInvoicesActivity : AppCompatActivity() {
             }
     }
 
-
     private fun fetchCollectionData(collectionName: String) {
         firestore.collection(collectionName)
             .get()
