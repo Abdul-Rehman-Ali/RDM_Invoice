@@ -9,7 +9,7 @@
     android:background="@drawable/back01"
     tools:context=".UserHistoryInvoicesActivity">
 
-    <!-- Layout for two CardViews -->
+    <!-- Layout for CardViews and ImageView -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/card_container"
         android:layout_width="0dp"
@@ -25,7 +25,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/totalRevenueCard"
+            app:layout_constraintEnd_toStartOf="@id/calendarIcon"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:cardCornerRadius="16dp"
@@ -63,12 +63,26 @@
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
+        <!-- Calendar ImageView -->
+        <ImageView
+            android:id="@+id/calendarIcon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/baseline_calendar_month_24"
+            app:layout_constraintStart_toEndOf="@id/totalInvoiceCard"
+            app:layout_constraintEnd_toStartOf="@id/totalRevenueCard"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            />
+
         <!-- Second CardView: Total Revenue -->
         <androidx.cardview.widget.CardView
             android:id="@+id/totalRevenueCard"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/totalInvoiceCard"
+            app:layout_constraintStart_toEndOf="@id/calendarIcon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -80,30 +94,30 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center">
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/totalRevenueTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Total Revenue"
-                    android:textStyle="bold"
+                    android:gravity="center"
                     android:paddingTop="10dp"
+                    android:text="Total Revenue"
                     android:textSize="14sp"
-                    android:gravity="center" />
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/totalRevenueCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="****"
-                    android:textStyle="bold"
-                    android:textSize="14sp"
+                    android:layout_marginTop="8dp"
                     android:gravity="center"
                     android:paddingBottom="10dp"
-                    android:layout_marginTop="8dp" />
+                    android:text="****"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
