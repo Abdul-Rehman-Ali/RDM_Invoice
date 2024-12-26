@@ -28,7 +28,7 @@
             app:layout_constraintEnd_toStartOf="@id/totalRevenueCard"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:cardCornerRadius="8dp"
+            app:cardCornerRadius="16dp"
             app:cardElevation="4dp"
             android:backgroundTint="@color/grey"
             android:layout_marginEnd="8dp"
@@ -46,7 +46,7 @@
                     android:layout_height="wrap_content"
                     android:text="Total Invoice"
                     android:textStyle="bold"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     android:paddingTop="10dp"
                     android:gravity="center" />
 
@@ -56,7 +56,7 @@
                     android:layout_height="wrap_content"
                     android:text="**"
                     android:textStyle="bold"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     android:gravity="center"
                     android:paddingBottom="10dp"
                     android:layout_marginTop="8dp" />
@@ -72,7 +72,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:cardCornerRadius="8dp"
+            app:cardCornerRadius="16dp"
             app:cardElevation="4dp"
             android:layout_marginStart="8dp"
             android:backgroundTint="@color/grey"
@@ -91,16 +91,16 @@
                     android:text="Total Revenue"
                     android:textStyle="bold"
                     android:paddingTop="10dp"
-                    android:textSize="16sp"
+                    android:textSize="14sp"
                     android:gravity="center" />
 
                 <TextView
                     android:id="@+id/totalRevenueCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="5,000"
+                    android:text="****"
                     android:textStyle="bold"
-                    android:textSize="18sp"
+                    android:textSize="14sp"
                     android:gravity="center"
                     android:paddingBottom="10dp"
                     android:layout_marginTop="8dp" />

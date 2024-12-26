@@ -98,7 +98,7 @@ class UserHistoryInvoicesActivity : AppCompatActivity() {
                 }
 
                 // Update the totalRevenueCount view with the total revenue
-                binding.totalRevenueCount.text = "$totalRevenue"
+                binding.totalRevenueCount.text = "AED: $totalRevenue"
 
                 adapter.notifyDataSetChanged() // Notify adapter of data change
             }
