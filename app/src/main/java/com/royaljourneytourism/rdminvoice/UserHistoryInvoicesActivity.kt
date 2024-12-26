@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.firebase.firestore.FirebaseFirestore
 import com.royaljourneytourism.rdminvoice.Adapter.Recyclerview.UsersHistoryInvoicesAdapter
@@ -24,6 +26,12 @@ class UserHistoryInvoicesActivity : AppCompatActivity() {
         // Initialize View Binding
         binding = ActivityUserHistoryInvoicesBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        ViewCompat.setOnApplyWindowInsetsListener(binding.main) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            insets
+        }
 
         // Set up RecyclerView
         adapter = UsersHistoryInvoicesAdapter(this, invoices)
@@ -71,10 +79,27 @@ class UserHistoryInvoicesActivity : AppCompatActivity() {
             .get()
             .addOnSuccessListener { documents ->
                 invoices.clear() // Clear existing list
+
+                var totalRevenue = 0.0 // Variable to store the sum of prices
+
+                // Fetch the total document count
+                val totalCount = documents.size()
+
+                // Update the totalInvoiceCount view with the total count
+                binding.totalInvoiceCount.text = "$totalCount"
+
                 for (document in documents) {
                     val user = document.toObject(userHistoryInvoice::class.java)
                     invoices.add(user)
+
+                    // Sum up the prices
+                    val price = document.getDouble("totalPrice") ?: 0.0 // Replace "price" with the actual field name
+                    totalRevenue += price
                 }
+
+                // Update the totalRevenueCount view with the total revenue
+                binding.totalRevenueCount.text = "$totalRevenue"
+
                 adapter.notifyDataSetChanged() // Notify adapter of data change
             }
             .addOnFailureListener { exception ->
@@ -82,4 +107,6 @@ class UserHistoryInvoicesActivity : AppCompatActivity() {
                 exception.printStackTrace()
             }
     }
+
+
 }
