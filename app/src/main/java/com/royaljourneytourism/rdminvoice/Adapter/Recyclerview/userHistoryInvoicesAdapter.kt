@@ -11,7 +11,7 @@ import com.royaljourneytourism.rdminvoice.R
 
 class UsersHistoryInvoicesAdapter(
     private val context: Context,
-    private val userList: ArrayList<userHistoryInvoice>
+    private var userList: ArrayList<userHistoryInvoice> // Changed to var for dynamic updates
 ) : RecyclerView.Adapter<UsersHistoryInvoicesAdapter.UserViewHolder>() {
 
     // ViewHolder class to bind views
@@ -34,11 +34,18 @@ class UsersHistoryInvoicesAdapter(
         holder.packageName.text = user.packageName
         holder.name.text = user.name
         holder.currentDate.text = user.currentDate
-        holder.totalPrice.text = user.totalPrice.toString()
+        holder.totalPrice.text = "${user.totalPrice}" // Formatting totalPrice
     }
 
     // Returns the size of the list
     override fun getItemCount(): Int {
         return userList.size
+    }
+
+    // Method to update the list dynamically
+    fun updateList(newList: List<userHistoryInvoice>) {
+        userList.clear() // Clear the old list
+        userList.addAll(newList) // Add the new filtered data
+        notifyDataSetChanged() // Notify the adapter to refresh the RecyclerView
     }
 }

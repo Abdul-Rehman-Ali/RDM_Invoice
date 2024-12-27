@@ -1,5 +1,6 @@
 package com.royaljourneytourism.rdminvoice
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -11,6 +12,9 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.royaljourneytourism.rdminvoice.Adapter.Recyclerview.UsersHistoryInvoicesAdapter
 import com.royaljourneytourism.rdminvoice.Model.userHistoryInvoice
 import com.royaljourneytourism.rdminvoice.databinding.ActivityUserHistoryInvoicesBinding
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 class UserHistoryInvoicesActivity : AppCompatActivity() {
 
@@ -18,6 +22,7 @@ class UserHistoryInvoicesActivity : AppCompatActivity() {
     private lateinit var adapter: UsersHistoryInvoicesAdapter
     private val firestore = FirebaseFirestore.getInstance()
     private val invoices = ArrayList<userHistoryInvoice>()
+    private val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,21 +51,21 @@ class UserHistoryInvoicesActivity : AppCompatActivity() {
         } else {
             Toast.makeText(this, "Document ID is missing!", Toast.LENGTH_SHORT).show()
         }
+
+        // Calendar Icon Click Listener
+        binding.calendarIcon.setOnClickListener {
+            showDateRangePicker()
+        }
     }
 
     private fun fetchWebNameAndData(documentId: String) {
-        val firestore = FirebaseFirestore.getInstance()
-
-        // Fetch the document by its ID
-        firestore.collection("Users") // Replace "users" with the actual collection name where user documents are stored
+        firestore.collection("Users")
             .document(documentId)
             .get()
             .addOnSuccessListener { document ->
                 if (document != null && document.exists()) {
-                    // Retrieve the webName field
                     val webName = document.getString("webName")
                     if (webName != null) {
-                        // Fetch data from the collection named after webName
                         fetchCollectionData(webName)
                     } else {
                         Toast.makeText(this, "webName field is missing!", Toast.LENGTH_SHORT).show()
@@ -78,35 +83,85 @@ class UserHistoryInvoicesActivity : AppCompatActivity() {
         firestore.collection(collectionName)
             .get()
             .addOnSuccessListener { documents ->
-                invoices.clear() // Clear existing list
+                invoices.clear()
 
-                var totalRevenue = 0.0 // Variable to store the sum of prices
-
-                // Fetch the total document count
+                var totalRevenue = 0.0
                 val totalCount = documents.size()
 
-                // Update the totalInvoiceCount view with the total count
                 binding.totalInvoiceCount.text = "$totalCount"
 
                 for (document in documents) {
                     val user = document.toObject(userHistoryInvoice::class.java)
                     invoices.add(user)
 
-                    // Sum up the prices
-                    val price = document.getDouble("totalPrice") ?: 0.0 // Replace "price" with the actual field name
+                    val price = document.getDouble("totalPrice") ?: 0.0
                     totalRevenue += price
                 }
 
-                // Update the totalRevenueCount view with the total revenue
                 binding.totalRevenueCount.text = "AED: $totalRevenue"
-
-                adapter.notifyDataSetChanged() // Notify adapter of data change
+                adapter.notifyDataSetChanged()
             }
             .addOnFailureListener { exception ->
-                // Handle error
                 exception.printStackTrace()
             }
     }
 
+    private fun showDateRangePicker() {
+        val calendar = Calendar.getInstance()
 
+        val startDate = Calendar.getInstance()
+        val endDate = Calendar.getInstance()
+
+        val dateRangePicker = DatePickerDialog(
+            this,
+            { _, year, month, dayOfMonth ->
+                startDate.set(year, month, dayOfMonth)
+
+                DatePickerDialog(
+                    this,
+                    { _, endYear, endMonth, endDay ->
+                        endDate.set(endYear, endMonth, endDay)
+                        filterInvoicesByDateRange(startDate.time, endDate.time)
+                    },
+                    calendar.get(Calendar.YEAR),
+                    calendar.get(Calendar.MONTH),
+                    calendar.get(Calendar.DAY_OF_MONTH)
+                ).apply {
+                    datePicker.maxDate = calendar.timeInMillis
+                    show()
+                }
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
+
+        dateRangePicker.datePicker.maxDate = calendar.timeInMillis
+        dateRangePicker.show()
+    }
+
+    private fun filterInvoicesByDateRange(startDate: Date, endDate: Date) {
+        val filteredInvoices = invoices.filter { invoice ->
+            try {
+                val invoiceDate = dateFormat.parse(invoice.currentDate)
+                invoiceDate.after(startDate) && invoiceDate.before(endDate) ||
+                        invoiceDate == startDate || invoiceDate == endDate
+            } catch (e: Exception) {
+                false
+            }
+        }
+
+        adapter.updateList(filteredInvoices)
+        binding.totalInvoiceCount.text = "${filteredInvoices.size}"
+
+        val totalRevenue = filteredInvoices.sumOf { invoice ->
+            try {
+                invoice.totalPrice ?: 0.0
+            } catch (e: Exception) {
+                0.0
+            }
+        }
+
+        binding.totalRevenueCount.text = "AED: $totalRevenue"
+    }
 }
