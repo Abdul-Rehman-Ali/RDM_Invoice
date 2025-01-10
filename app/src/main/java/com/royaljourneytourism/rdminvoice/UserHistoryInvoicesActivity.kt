@@ -143,7 +143,7 @@ class UserHistoryInvoicesActivity : AppCompatActivity() {
     private fun filterInvoicesByDateRange(startDate: Date, endDate: Date) {
         val filteredInvoices = invoices.filter { invoice ->
             try {
-                val invoiceDate = dateFormat.parse(invoice.currentDate)
+                val invoiceDate = dateFormat.parse(invoice.timeStamp)
                 invoiceDate.after(startDate) && invoiceDate.before(endDate) ||
                         invoiceDate == startDate || invoiceDate == endDate
             } catch (e: Exception) {

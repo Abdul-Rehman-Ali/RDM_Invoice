@@ -33,7 +33,7 @@ class UsersHistoryInvoicesAdapter(
         val user = userList[position]
         holder.packageName.text = user.packageName
         holder.name.text = user.name
-        holder.currentDate.text = user.currentDate
+        holder.currentDate.text = user.timeStamp
         holder.totalPrice.text = "${user.totalPrice}" // Formatting totalPrice
     }
 
