@@ -157,16 +157,34 @@
                 android:textColorHint="@color/primary" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
-            android:id="@+id/btn_update_color"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/passwordTextInputLayout"
             android:layout_marginTop="16dp"
             android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:text="Update Color"
-            android:backgroundTint="@color/primary"
-            android:textColor="@android:color/white" />
+            android:layout_marginEnd="16dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/btn_update_color"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Add Color Code"
+                android:inputType="text"
+                android:textColor="@color/black"
+                android:textColorHint="@color/primary" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+<!--        <Button-->
+<!--            android:id="@+id/btn_update_color"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="16dp"-->
+<!--            android:layout_marginStart="16dp"-->
+<!--            android:layout_marginEnd="16dp"-->
+<!--            android:text="Update Color"-->
+<!--            android:backgroundTint="@color/primary"-->
+<!--            android:textColor="@android:color/white" />-->
 
         <Button
             android:id="@+id/btn_update_logo"

@@ -64,9 +64,9 @@ class AddNewUserActivity : AppCompatActivity() {
         }
 
         // Handle "Pick Color" button click
-        binding.btnPickColor.setOnClickListener {
-            showColorPickerDialog()
-        }
+//        binding.btnPickColor.setOnClickListener {
+//            showColorPickerDialog()
+//        }
 
         // Handle "Upload Photo" button click
         binding.btnUploadLogo.setOnClickListener {
@@ -96,21 +96,21 @@ class AddNewUserActivity : AppCompatActivity() {
             }
     }
 
-    private fun showColorPickerDialog() {
-        val colorPickerDialog = ColorPickerDialog.Builder(this)
-            .setTitle("Pick a Color")
-            .setPositiveButton("OK", ColorEnvelopeListener { envelope, _ ->
-                pickedColor = "#${envelope.hexCode}"
-                binding.btnPickColor.setBackgroundColor(Color.parseColor(pickedColor))
-                Toast.makeText(this, "Color Selected: $pickedColor", Toast.LENGTH_SHORT).show()
-            })
-            .setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
-            .attachAlphaSlideBar(true)
-            .attachBrightnessSlideBar(true)
-            .create()
-
-        colorPickerDialog.show()
-    }
+//    private fun showColorPickerDialog() {
+//        val colorPickerDialog = ColorPickerDialog.Builder(this)
+//            .setTitle("Pick a Color")
+//            .setPositiveButton("OK", ColorEnvelopeListener { envelope, _ ->
+//                pickedColor = "#${envelope.hexCode}"
+//                binding.btnPickColor.setBackgroundColor(Color.parseColor(pickedColor))
+//                Toast.makeText(this, "Color Selected: $pickedColor", Toast.LENGTH_SHORT).show()
+//            })
+//            .setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
+//            .attachAlphaSlideBar(true)
+//            .attachBrightnessSlideBar(true)
+//            .create()
+//
+//        colorPickerDialog.show()
+//    }
 
     private fun collectUserData() {
         username = binding.etUsername.text.toString()
@@ -119,6 +119,7 @@ class AddNewUserActivity : AppCompatActivity() {
         password = binding.etPassword.text.toString()
         websiteURL = binding.etWebsiteURL.text.toString()
         websiteName = binding.etWebsite.text.toString()
+        pickedColor = binding.btnPickColor.text.toString()
     }
 
     private fun saveUserDataToFirestore() {

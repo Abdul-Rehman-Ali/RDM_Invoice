@@ -57,7 +57,7 @@ class EditUserDetailActivity : AppCompatActivity() {
 
         // Set up the update buttons
         binding.btnUpdate.setOnClickListener { updateUserDetails() }
-        binding.btnUpdateColor.setOnClickListener { openColorPicker() }
+//        binding.btnUpdateColor.setOnClickListener { openColorPicker() }
         binding.btnUpdateLogo.setOnClickListener { pickImageLauncher.launch("image/*") }
     }
 
@@ -74,11 +74,12 @@ class EditUserDetailActivity : AppCompatActivity() {
                         binding.etPassword.setText(document.getString("password"))
                         binding.etWebsiteURL.setText(document.getString("webURL"))
                         binding.etWebsite.setText(document.getString("webName"))
+                        binding.btnUpdateColor.setText(document.getString("color"))
 
                         // Set color and logo if available
                         selectedColor = document.getString("color")
                         selectedColor?.let {
-                            binding.btnUpdateColor.setBackgroundColor(Color.parseColor(it))
+//                            binding.btnUpdateColor.setBackgroundColor(Color.parseColor(it))
                         }
                     } else {
                         Toast.makeText(this, "User not found!", Toast.LENGTH_SHORT).show()
@@ -101,7 +102,7 @@ class EditUserDetailActivity : AppCompatActivity() {
                 "password" to binding.etPassword.text.toString(),
                 "webURL" to binding.etWebsiteURL.text.toString(),
                 "webName" to binding.etWebsite.text.toString(),
-                "color" to selectedColor
+                "color" to binding.btnUpdateColor.text.toString()
             )
 
             firestore.collection("Users").document(documentId)
@@ -117,20 +118,20 @@ class EditUserDetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun openColorPicker() {
-        ColorPickerDialog.Builder(this)
-            .setTitle("Pick a Color")
-            .setPositiveButton("Select", ColorEnvelopeListener { envelope, _ ->
-                selectedColor = "#${envelope.hexCode}"
-                binding.btnUpdateColor.setBackgroundColor(Color.parseColor(selectedColor))
-                Toast.makeText(this, "Color selected: $selectedColor", Toast.LENGTH_SHORT).show()
-            })
-            .setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
-            .attachAlphaSlideBar(true)
-            .attachBrightnessSlideBar(true)
-            .create()
-            .show()
-    }
+//    private fun openColorPicker() {
+//        ColorPickerDialog.Builder(this)
+//            .setTitle("Pick a Color")
+//            .setPositiveButton("Select", ColorEnvelopeListener { envelope, _ ->
+//                selectedColor = "#${envelope.hexCode}"
+//                binding.btnUpdateColor.setBackgroundColor(Color.parseColor(selectedColor))
+//                Toast.makeText(this, "Color selected: $selectedColor", Toast.LENGTH_SHORT).show()
+//            })
+//            .setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
+//            .attachAlphaSlideBar(true)
+//            .attachBrightnessSlideBar(true)
+//            .create()
+//            .show()
+//    }
 
     private fun uploadLogoToStorage(uri: Uri) {
         val fileName = "logos/${System.currentTimeMillis()}.jpg"
